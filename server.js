@@ -187,73 +187,6 @@ app.post('/api/verification/submit', async (req, res) => {
 
         console.log('Received verification request for TFN:', tollfreePhoneNumber, '- Business:', businessName);
 
-        // Step 1: Create a Customer Profile (Primary Profile)
-        let primaryProfileSid;
-        try {
-            const customerProfile = await client.trusthub.v1.customerProfiles.create({
-                friendlyName: `${businessName} - TFN Verification`,
-                email: businessContactEmail,
-                policySid: 'RNb0d4771c2c98518d0d16886c50c3c114', // Secondary Customer Profile policy
-                statusCallback: isvNotificationEmail ? `mailto:${isvNotificationEmail}` : undefined
-            });
-
-            primaryProfileSid = customerProfile.sid;
-            console.log('Created Customer Profile:', primaryProfileSid);
-
-            // Step 2: Create End User resource with business information
-            const endUser = await client.trusthub.v1.endUsers.create({
-                friendlyName: businessName,
-                type: 'customer_profile_business_information',
-                attributes: {
-                    business_name: businessName,
-                    business_type: businessType,
-                    business_registration_number: businessRegistrationNumber || '',
-                    business_registration_authority: businessRegistrationAuthority || '',
-                    website_url: businessWebsite,
-                    social_media_profile_urls: [privacyPolicyUrl, termsOfServiceUrl],
-                    business_regions_of_operation: 'US',
-                    business_industry: 'Technology' // You may want to make this a form field
-                }
-            });
-            console.log('Created End User:', endUser.sid);
-
-            // Step 3: Create Address resource
-            const address = await client.trusthub.v1.addresses.create({
-                friendlyName: `${businessName} Address`,
-                customerName: businessName,
-                street: businessAddress.street,
-                city: businessAddress.city,
-                region: businessAddress.state,
-                postalCode: businessAddress.postalCode,
-                isoCountry: businessAddress.country || 'US'
-            });
-            console.log('Created Address:', address.sid);
-
-            // Step 4: Assign End User and Address to Customer Profile
-            await client.trusthub.v1.customerProfiles(primaryProfileSid)
-                .customerProfilesEntityAssignments
-                .create({ objectSid: endUser.sid });
-            console.log('Assigned End User to Profile');
-
-            await client.trusthub.v1.customerProfiles(primaryProfileSid)
-                .customerProfilesEntityAssignments
-                .create({ objectSid: address.sid });
-            console.log('Assigned Address to Profile');
-
-            // Step 5: Submit the profile for review
-            await client.trusthub.v1.customerProfiles(primaryProfileSid)
-                .update({ status: 'pending-review' });
-            console.log('Submitted Customer Profile for review');
-
-        } catch (profileError) {
-            console.error('Error creating customer profile:', profileError);
-            return res.status(500).json({
-                success: false,
-                message: 'Failed to create customer profile. Please check your business information and try again.',
-                error: profileError.message
-            });
-        }
-
         // Look up the phone number to get its SID
         let phoneNumberSid;
         try {
@@ -326,7 +259,6 @@ app.post('/api/verification/submit', async (req, res) => {
         const tollfreeVerification = await client.messaging.v1.tollfreeVerifications
             .create({
                 tollfreePhoneNumberSid: phoneNumberSid,
-                primaryProfileSid: primaryProfileSid,
                 businessName: businessName,
                 businessWebsite: businessWebsite,
                 websiteUrl: privacyPolicyUrl,
