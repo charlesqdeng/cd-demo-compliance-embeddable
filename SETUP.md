@@ -62,15 +62,18 @@ Visit: **http://localhost:3000/index.html**
 ## What You'll Need
 
 For toll-free verification, customers must provide:
-- Toll-free phone number (E.164 format: +18001234567)
+- Toll-free phone number (E.164 format: +18001234567) - **Must be purchased in your Twilio account first**
 - Business name, type, and registration details
-- Business website and physical address
-- Privacy Policy and Terms of Service URLs
+- Business website with https:// (e.g., https://example.com)
+- Physical business address
+- Privacy Policy URL with https://
+- Terms of Service URL with https://
 - Contact information
-- Messaging use case description
+- Messaging use case category (select from dropdown)
+- Detailed use case description
 - Sample message content (standard, HELP, STOP)
 - Opt-in workflow details
-- Expected monthly message volume
+- Expected monthly message volume (select from ranges)
 
 ## Testing the Embeddable
 
