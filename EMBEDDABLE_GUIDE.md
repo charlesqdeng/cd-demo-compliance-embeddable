@@ -23,6 +23,8 @@ Custom-built form that submits directly to Twilio API:
 - ✅ Full control over UI/UX
 - ✅ Custom validation and branding
 - ✅ More fields visible at once
+- ✅ **Automatic TrustHub Customer Profile creation**
+- ✅ **Automatic End User and Address resource creation**
 - ⚠️ Must maintain field updates manually
 - ⚠️ No resume functionality
 

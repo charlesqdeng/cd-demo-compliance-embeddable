@@ -56,8 +56,19 @@ Visit: **http://localhost:3000/index.html**
 - ✅ Full UI control
 - ✅ Custom validation
 - ✅ All fields visible at once
+- ✅ **Automatic TrustHub Customer Profile creation**
 - ⚠️ No resume functionality
 - ⚠️ Must maintain field updates manually
+
+**What happens automatically:**
+1. Creates TrustHub Customer Profile with your business info
+2. Creates End User resource with business details
+3. Creates Address resource
+4. Assigns resources to profile
+5. Submits profile for Twilio review
+6. Creates toll-free verification with primary profile
+
+See [TRUSTHUB.md](TRUSTHUB.md) for detailed information.
 
 ## What You'll Need
 

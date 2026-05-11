@@ -11,6 +11,8 @@ A professional, customer-facing website for submitting Toll Free Number verifica
 - 📊 Real-time submission to Twilio API
 - 🎯 Success/error feedback with verification tracking
 - 🔐 Secure credential management via environment variables
+- 🤖 Automatic TrustHub Customer Profile creation
+- 📋 Complete business information collection and validation
 
 ## Quick Start
 
@@ -40,7 +42,10 @@ npm start
 ### Backend
 - **[server.js](server.js)** - Express server with Twilio API integration
 - Endpoints:
-  - `POST /api/verification/submit` - Submit verification to Twilio
+  - `POST /api/embeddable/initialize` - Initialize Twilio embeddable (creates inquiry)
+  - `POST /api/embeddable/resume` - Resume existing inquiry session
+  - `POST /api/embeddable/webhook` - Handle Twilio webhooks
+  - `POST /api/verification/submit` - Submit verification via custom form (auto-creates TrustHub profile)
   - `GET /api/verification/status/:sid` - Check verification status
   - `GET /api/health` - Server health check
 
@@ -63,19 +68,63 @@ The verification form collects all required information for Twilio toll-free ver
 
 ## Twilio Integration
 
-This application uses the **Twilio Messaging API v1** for toll-free verification submissions:
+This application integrates with multiple Twilio APIs:
 
+### 1. Twilio Compliance Embeddable (Recommended)
+Uses TrustHub API to initialize inquiry sessions with iframe integration.
+
+### 2. Custom Form with Automated TrustHub Profile Creation
+The custom form automatically creates all required TrustHub resources:
+
+**Automated Workflow:**
 ```javascript
+// Step 1: Create Customer Profile
+const customerProfile = await client.trusthub.v1.customerProfiles.create({
+    friendlyName: `${businessName} - TFN Verification`,
+    email: businessContactEmail,
+    policySid: 'RNb0d4771c2c98518d0d16886c50c3c114'
+});
+
+// Step 2: Create End User (Business Information)
+const endUser = await client.trusthub.v1.endUsers.create({
+    friendlyName: businessName,
+    type: 'customer_profile_business_information',
+    attributes: { /* business details */ }
+});
+
+// Step 3: Create Address
+const address = await client.trusthub.v1.addresses.create({
+    friendlyName: `${businessName} Address`,
+    customerName: businessName,
+    street: businessAddress.street,
+    // ... address details
+});
+
+// Step 4: Assign resources to profile
+await client.trusthub.v1.customerProfiles(primaryProfileSid)
+    .customerProfilesEntityAssignments
+    .create({ objectSid: endUser.sid });
+
+// Step 5: Submit toll-free verification
 const verification = await client.messaging.v1.tollfreeVerifications.create({
+    tollfreePhoneNumberSid: phoneNumberSid,
+    primaryProfileSid: primaryProfileSid,
     businessName: '...',
-    businessWebsite: '...',
     // ... other fields
 });
 ```
 
+**What Gets Created:**
+- ✅ TrustHub Customer Profile (Primary Profile)
+- ✅ End User resource with business information
+- ✅ Address resource with physical location
+- ✅ Automatic assignment and submission
+- ✅ Toll-Free Verification with all required fields
+
 ### Response
 On successful submission, you'll receive:
 - Verification SID (unique identifier)
+- Primary Profile SID (TrustHub Customer Profile)
 - Status (pending, in-review, approved, rejected)
 - Created timestamp
 
