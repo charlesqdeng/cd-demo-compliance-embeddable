@@ -277,7 +277,9 @@ app.post('/api/verification/submit', async (req, res) => {
                 useCaseSummary: useCaseDescription,
                 productionMessageSample: messageContent,
                 optInType: optInType,
-                optInImageUrls: Array.isArray(optInImageUrls) ? optInImageUrls : (optInImageUrls ? [optInImageUrls] : []),
+                optInImageUrls: Array.isArray(optInImageUrls) && optInImageUrls.length > 0
+                    ? optInImageUrls
+                    : ['https://placeholder.com/verbal-consent'], // Placeholder for verbal/cases without images
                 messageVolume: messageVolume,
                 additionalInformation: additionalInfo
             });

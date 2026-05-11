@@ -208,9 +208,9 @@ async function initializeVerificationForm() {
                 <small>Explain the step-by-step process customers follow to opt in</small>
             </div>
 
-            <div class="form-group">
+            <div class="form-group" id="optInImageUrlsGroup">
                 <label for="optInImageUrls">Opt-In Screenshot URLs *</label>
-                <textarea id="optInImageUrls" name="optInImageUrls" rows="3" required
+                <textarea id="optInImageUrls" name="optInImageUrls" rows="3"
                     placeholder="https://example.com/screenshots/opt-in-form.png&#10;https://example.com/screenshots/opt-in-confirmation.png"></textarea>
                 <small>Provide URLs to screenshots showing your opt-in process (one URL per line). Must be publicly accessible image URLs.</small>
             </div>
@@ -316,6 +316,23 @@ async function initializeVerificationForm() {
             document.getElementById('linkExamples').required = false;
         }
     });
+
+    // Toggle opt-in screenshot field based on opt-in type
+    const optInTypeSelect = document.getElementById('optInType');
+    const optInImageUrlsGroup = document.getElementById('optInImageUrlsGroup');
+    const optInImageUrlsField = document.getElementById('optInImageUrls');
+
+    optInTypeSelect.addEventListener('change', function() {
+        // Verbal consent doesn't need screenshots
+        if (this.value === 'VERBAL') {
+            optInImageUrlsGroup.style.display = 'none';
+            optInImageUrlsField.required = false;
+            optInImageUrlsField.value = ''; // Clear any existing value
+        } else {
+            optInImageUrlsGroup.style.display = 'block';
+            optInImageUrlsField.required = true;
+        }
+    });
 }
 
 async function handleFormSubmit(e) {
@@ -367,7 +384,9 @@ async function handleFormSubmit(e) {
         linkExamples: document.getElementById('linkExamples').value,
         optInType: document.getElementById('optInType').value,
         optInWorkflow: document.getElementById('optInWorkflow').value,
-        optInImageUrls: document.getElementById('optInImageUrls').value.split('\n').filter(url => url.trim()),
+        optInImageUrls: document.getElementById('optInImageUrls').value.trim()
+            ? document.getElementById('optInImageUrls').value.split('\n').filter(url => url.trim())
+            : ['https://placeholder.com/opt-in-verbal'], // Placeholder for verbal consent
         helpMessage: document.getElementById('helpMessage').value,
         helpKeywords: document.getElementById('helpKeywords').value,
         stopMessage: document.getElementById('stopMessage').value,
