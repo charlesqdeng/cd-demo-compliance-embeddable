@@ -277,7 +277,7 @@ app.post('/api/verification/submit', async (req, res) => {
                 useCaseSummary: useCaseDescription,
                 productionMessageSample: messageContent,
                 optInType: optInType,
-                optInImageUrls: optInImageUrls || [],
+                optInImageUrls: Array.isArray(optInImageUrls) ? optInImageUrls : (optInImageUrls ? [optInImageUrls] : []),
                 messageVolume: messageVolume,
                 additionalInformation: additionalInfo
             });

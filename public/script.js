@@ -209,6 +209,13 @@ async function initializeVerificationForm() {
             </div>
 
             <div class="form-group">
+                <label for="optInImageUrls">Opt-In Screenshot URLs *</label>
+                <textarea id="optInImageUrls" name="optInImageUrls" rows="3" required
+                    placeholder="https://example.com/screenshots/opt-in-form.png&#10;https://example.com/screenshots/opt-in-confirmation.png"></textarea>
+                <small>Provide URLs to screenshots showing your opt-in process (one URL per line). Must be publicly accessible image URLs.</small>
+            </div>
+
+            <div class="form-group">
                 <label for="helpMessage">Help Message Sample *</label>
                 <textarea id="helpMessage" name="helpMessage" rows="2" required
                     placeholder="Example: Reply HELP for assistance or call 1-800-XXX-XXXX"></textarea>
@@ -360,6 +367,7 @@ async function handleFormSubmit(e) {
         linkExamples: document.getElementById('linkExamples').value,
         optInType: document.getElementById('optInType').value,
         optInWorkflow: document.getElementById('optInWorkflow').value,
+        optInImageUrls: document.getElementById('optInImageUrls').value.split('\n').filter(url => url.trim()),
         helpMessage: document.getElementById('helpMessage').value,
         helpKeywords: document.getElementById('helpKeywords').value,
         stopMessage: document.getElementById('stopMessage').value,
