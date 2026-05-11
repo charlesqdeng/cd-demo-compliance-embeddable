@@ -15,6 +15,7 @@ npm install
 ```env
 TWILIO_ACCOUNT_SID=ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 TWILIO_AUTH_TOKEN=your_auth_token_here
+ISV_NOTIFICATION_EMAIL=your-isv-email@example.com
 ```
 
 ## Step 3: Start the Server
@@ -29,29 +30,56 @@ Or for development with auto-reload:
 npm run dev
 ```
 
-## Step 4: Open in Browser
+## Step 4: Choose Your Implementation
 
-Visit: **http://localhost:3000**
+This app provides **two options** for toll-free verification:
 
-## What You'll See
+### Option 1: Official Twilio Embeddable (Recommended) ⭐
+Visit: **http://localhost:3000/embeddable.html**
 
-- ✅ CD Demo branded landing page
-- ✅ Complete toll-free verification form
-- ✅ All required fields for Twilio compliance
-- ✅ Real-time submission to Twilio API
-- ✅ Success/error feedback
+- ✅ Official Twilio-maintained form
+- ✅ Resume incomplete submissions
+- ✅ Always up-to-date with Twilio changes
+- ✅ CD Demo branded via URL parameters
+- ✅ Iframe-based integration
 
-## Testing the Form
+**How it works:**
+1. Customer enters toll-free number
+2. Server initializes inquiry with Twilio
+3. Twilio's form loads in iframe
+4. Customer completes verification
+5. Success message with inquiry ID
 
-Fill out all required fields:
-- Business information (name, website, address)
-- Contact details (name, email, phone)
-- Use case category and description
-- Expected message volume
-- Sample message content
-- Opt-in method
+### Option 2: Custom Form
+Visit: **http://localhost:3000/index.html**
 
-Click "Submit Verification" - if your Twilio credentials are correct, it will submit to Twilio and return a verification SID.
+- ✅ Full UI control
+- ✅ Custom validation
+- ✅ All fields visible at once
+- ⚠️ No resume functionality
+- ⚠️ Must maintain field updates manually
+
+## What You'll Need
+
+For toll-free verification, customers must provide:
+- Toll-free phone number (E.164 format: +18001234567)
+- Business name, type, and registration details
+- Business website and physical address
+- Privacy Policy and Terms of Service URLs
+- Contact information
+- Messaging use case description
+- Sample message content (standard, HELP, STOP)
+- Opt-in workflow details
+- Expected monthly message volume
+
+## Testing the Embeddable
+
+1. Open http://localhost:3000/embeddable.html
+2. Enter a toll-free number: `+18001234567`
+3. (Optional) Enter customer email
+4. Click "Start Verification"
+5. Complete the Twilio form
+6. Check server logs for inquiry ID
 
 ## Troubleshooting
 
@@ -59,10 +87,15 @@ Click "Submit Verification" - if your Twilio credentials are correct, it will su
 - Check that `.env` file has correct TWILIO_ACCOUNT_SID and TWILIO_AUTH_TOKEN
 - Restart the server after updating `.env`
 
-### "Failed to submit verification"
+### "Failed to initialize verification"
 - Verify Twilio credentials are valid
-- Check console logs for specific error
-- Ensure all required form fields are filled
+- Check toll-free number format (+1800, +1888, +1877, +1866, +1855, +1844)
+- Check server logs for specific error
+
+### Iframe not loading
+- Check browser console (F12) for errors
+- Verify inquiry ID and session token are valid
+- Ensure session token hasn't expired (24 hours)
 
 ### Form not loading
 - Check that server is running on port 3000
@@ -70,4 +103,6 @@ Click "Submit Verification" - if your Twilio credentials are correct, it will su
 
 ## Next Steps
 
-For production deployment, see [README.md](README.md) for security best practices.
+- **Embeddable Details**: See [EMBEDDABLE_GUIDE.md](EMBEDDABLE_GUIDE.md) for complete integration documentation
+- **Production Deployment**: See [README.md](README.md) for security best practices
+- **API Reference**: See server.js for all available endpoints
