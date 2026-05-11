@@ -132,17 +132,20 @@ async function initializeVerificationForm() {
                 <label for="useCase">Use Case Category *</label>
                 <select id="useCase" name="useCase" required>
                     <option value="">Select a use case</option>
-                    <option value="2FA">Two-Factor Authentication</option>
-                    <option value="ACCOUNT_NOTIFICATION">Account Notifications</option>
+                    <option value="TWO_FACTOR_AUTHENTICATION">Two-Factor Authentication</option>
+                    <option value="ACCOUNT_NOTIFICATIONS">Account Notifications</option>
                     <option value="CUSTOMER_CARE">Customer Care</option>
-                    <option value="DELIVERY_NOTIFICATION">Delivery Notifications</option>
-                    <option value="FRAUD_ALERT">Fraud Alerts</option>
+                    <option value="CHARITY_NONPROFIT">Charity/Non-Profit</option>
+                    <option value="DELIVERY_NOTIFICATIONS">Delivery Notifications</option>
+                    <option value="FRAUD_ALERT_MESSAGING">Fraud Alert Messaging</option>
+                    <option value="EVENTS">Events</option>
                     <option value="HIGHER_EDUCATION">Higher Education</option>
+                    <option value="K12">K-12 Education</option>
                     <option value="MARKETING">Marketing</option>
-                    <option value="MIXED">Mixed</option>
-                    <option value="POLLING_VOTING">Polling and Voting</option>
+                    <option value="POLLING_AND_VOTING_NON_POLITICAL">Polling and Voting (Non-Political)</option>
+                    <option value="POLITICAL_ELECTION_CAMPAIGNS">Political/Election Campaigns</option>
                     <option value="PUBLIC_SERVICE_ANNOUNCEMENT">Public Service Announcement</option>
-                    <option value="SECURITY_ALERT">Security Alerts</option>
+                    <option value="SECURITY_ALERT">Security Alert</option>
                 </select>
             </div>
 
