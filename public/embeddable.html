@@ -53,8 +53,11 @@
                             <div class="form-group">
                                 <label for="tollfreeNumber">Toll-Free Phone Number *</label>
                                 <input type="tel" id="tollfreeNumber" name="tollfreeNumber" required
-                                    placeholder="+18001234567" pattern="\+1[8][0-9]{9}">
-                                <small>Enter your toll-free number in E.164 format (e.g., +18001234567)</small>
+                                    placeholder="+18001234567"
+                                    pattern="\+1[8][0-9]{9}"
+                                    maxlength="12"
+                                    title="Enter exactly one toll-free number in E.164 format">
+                                <small>Enter exactly ONE toll-free number in E.164 format (e.g., +18001234567). Must start with +1800, +1888, +1877, +1866, +1855, or +1844</small>
                             </div>
                             <div class="form-group">
                                 <label for="customerEmail">Contact Email (Optional)</label>

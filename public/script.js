@@ -28,8 +28,11 @@ async function initializeVerificationForm() {
             <div class="form-group">
                 <label for="tollfreePhoneNumber">Toll-Free Phone Number *</label>
                 <input type="tel" id="tollfreePhoneNumber" name="tollfreePhoneNumber" required
-                    placeholder="+18001234567" pattern="\\+1[8][0-9]{9}">
-                <small>Enter your toll-free number in E.164 format (e.g., +18001234567). Must start with +1800, +1888, +1877, +1866, +1855, or +1844</small>
+                    placeholder="+18001234567"
+                    pattern="\\+1[8][0-9]{9}"
+                    maxlength="12"
+                    title="Enter exactly one toll-free number in E.164 format">
+                <small>Enter exactly ONE toll-free number in E.164 format (e.g., +18001234567). Submit each number separately. Must start with +1800, +1888, +1877, +1866, +1855, or +1844</small>
             </div>
 
             <h3>Business Information</h3>
@@ -242,6 +245,29 @@ async function initializeVerificationForm() {
     `;
 
     const form = document.getElementById('verification-form');
+
+    // Add TFN validation
+    const tfnInput = document.getElementById('tollfreePhoneNumber');
+    tfnInput.addEventListener('input', function(e) {
+        // Remove any non-digit characters except +
+        let value = e.target.value.replace(/[^\d+]/g, '');
+
+        // Ensure it starts with +1
+        if (value.length > 0 && !value.startsWith('+')) {
+            value = '+' + value;
+        }
+        if (value.length > 1 && !value.startsWith('+1')) {
+            value = '+1' + value.slice(1);
+        }
+
+        // Limit to exactly 12 characters
+        if (value.length > 12) {
+            value = value.slice(0, 12);
+        }
+
+        e.target.value = value;
+    });
+
     form.addEventListener('submit', handleFormSubmit);
 
     // Toggle registration fields based on business type
@@ -279,6 +305,20 @@ async function handleFormSubmit(e) {
     e.preventDefault();
 
     const submitBtn = e.target.querySelector('.submit-btn');
+    const tfnValue = document.getElementById('tollfreePhoneNumber').value.trim();
+
+    // Validate single number only
+    if (tfnValue.includes(',') || tfnValue.includes(';') || tfnValue.match(/\s/)) {
+        alert('Please enter only ONE toll-free number. Submit each number separately.');
+        return;
+    }
+
+    // Validate format
+    if (!tfnValue.match(/^\+1(800|888|877|866|855|844)\d{7}$/)) {
+        alert('Invalid toll-free number format. Must be +1 followed by 800/888/877/866/855/844 and 7 digits.');
+        return;
+    }
+
     submitBtn.disabled = true;
     submitBtn.textContent = 'Submitting...';
 

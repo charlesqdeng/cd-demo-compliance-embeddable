@@ -4,17 +4,66 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function initializeTFNForm() {
     const tfnForm = document.getElementById('tfn-form');
+    const tfnInput = document.getElementById('tollfreeNumber');
+
+    // Add real-time validation
+    tfnInput.addEventListener('input', function(e) {
+        // Remove any non-digit characters except +
+        let value = e.target.value.replace(/[^\d+]/g, '');
+
+        // Ensure it starts with +1
+        if (value.length > 0 && !value.startsWith('+')) {
+            value = '+' + value;
+        }
+        if (value.length > 1 && !value.startsWith('+1')) {
+            value = '+1' + value.slice(1);
+        }
+
+        // Limit to exactly 12 characters (+1 and 10 digits)
+        if (value.length > 12) {
+            value = value.slice(0, 12);
+        }
+
+        e.target.value = value;
+
+        // Show warning if trying to enter multiple numbers
+        if (value.includes(',') || value.includes(';') || value.includes(' ')) {
+            showTFNError('Please enter only ONE toll-free number');
+        }
+    });
+
     tfnForm.addEventListener('submit', handleTFNSubmit);
 
     // Listen for messages from the iframe
     window.addEventListener('message', handleEmbeddableMessage);
 }
 
+function showTFNError(message) {
+    const tfnInput = document.getElementById('tollfreeNumber');
+    tfnInput.setCustomValidity(message);
+    tfnInput.reportValidity();
+    setTimeout(() => {
+        tfnInput.setCustomValidity('');
+    }, 3000);
+}
+
 async function handleTFNSubmit(e) {
     e.preventDefault();
 
-    const tollfreeNumber = document.getElementById('tollfreeNumber').value;
-    const customerEmail = document.getElementById('customerEmail').value;
+    const tollfreeNumber = document.getElementById('tollfreeNumber').value.trim();
+    const customerEmail = document.getElementById('customerEmail').value.trim();
+
+    // Validate single number (no commas, semicolons, spaces in middle)
+    if (tollfreeNumber.includes(',') || tollfreeNumber.includes(';') || tollfreeNumber.match(/\s/)) {
+        showTFNError('Please enter only ONE toll-free number. Submit each number separately.');
+        return;
+    }
+
+    // Validate exact format
+    if (!tollfreeNumber.match(/^\+1(800|888|877|866|855|844)\d{7}$/)) {
+        showTFNError('Invalid toll-free number format. Must be +1 followed by 800/888/877/866/855/844 and 7 digits.');
+        return;
+    }
 
     // Hide input section, show loading
     document.getElementById('tfn-input-section').style.display = 'none';
