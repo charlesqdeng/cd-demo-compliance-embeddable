@@ -31,8 +31,18 @@ app.post('/api/embeddable/initialize', async (req, res) => {
 
         console.log('Initializing embeddable for TFN:', tollfreePhoneNumber);
 
-        // Validate toll-free number format
-        if (!tollfreePhoneNumber || !tollfreePhoneNumber.match(/^\+1(800|888|877|866|855|844)\d{7}$/)) {
+        // Validate toll-free number format - must be exactly one number
+        if (!tollfreePhoneNumber ||
+            tollfreePhoneNumber.includes(',') ||
+            tollfreePhoneNumber.includes(';') ||
+            tollfreePhoneNumber.trim().includes(' ')) {
+            return res.status(400).json({
+                success: false,
+                message: 'Please enter only ONE toll-free number. Submit each number separately.'
+            });
+        }
+
+        if (!tollfreePhoneNumber.match(/^\+1(800|888|877|866|855|844)\d{7}$/)) {
             return res.status(400).json({
                 success: false,
                 message: 'Invalid toll-free number. Must be in E.164 format and start with +1800, +1888, +1877, +1866, +1855, or +1844'
@@ -170,8 +180,18 @@ app.post('/api/verification/submit', async (req, res) => {
 
         console.log('Received verification request for TFN:', tollfreePhoneNumber, '- Business:', businessName);
 
-        // Validate toll-free number format
-        if (!tollfreePhoneNumber || !tollfreePhoneNumber.match(/^\+1(800|888|877|866|855|844)\d{7}$/)) {
+        // Validate toll-free number format - must be exactly one number
+        if (!tollfreePhoneNumber ||
+            tollfreePhoneNumber.includes(',') ||
+            tollfreePhoneNumber.includes(';') ||
+            tollfreePhoneNumber.trim().includes(' ')) {
+            return res.status(400).json({
+                success: false,
+                message: 'Please enter only ONE toll-free number. Submit each number separately.'
+            });
+        }
+
+        if (!tollfreePhoneNumber.match(/^\+1(800|888|877|866|855|844)\d{7}$/)) {
             return res.status(400).json({
                 success: false,
                 message: 'Invalid toll-free number. Must be in E.164 format and start with +1800, +1888, +1877, +1866, +1855, or +1844'
