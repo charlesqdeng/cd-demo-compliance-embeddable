@@ -1,0 +1,350 @@
+document.addEventListener('DOMContentLoaded', function() {
+    initializeVerificationForm();
+    checkServerHealth();
+});
+
+async function checkServerHealth() {
+    try {
+        const response = await fetch('/api/health');
+        const data = await response.json();
+        if (!data.twilioConfigured) {
+            console.warn('Twilio credentials not configured. Please update .env file.');
+        }
+    } catch (error) {
+        console.error('Server health check failed:', error);
+    }
+}
+
+async function initializeVerificationForm() {
+    const container = document.getElementById('twilio-compliance-embeddable');
+    const loadingState = document.getElementById('loading-state');
+
+    loadingState.style.display = 'none';
+
+    container.innerHTML = `
+        <form id="verification-form" class="verification-form">
+            <h3>Business Information</h3>
+
+            <div class="form-group">
+                <label for="businessName">Business Name *</label>
+                <input type="text" id="businessName" name="businessName" required>
+            </div>
+
+            <div class="form-group">
+                <label for="businessWebsite">Business Website *</label>
+                <input type="url" id="businessWebsite" name="businessWebsite" required placeholder="https://example.com">
+            </div>
+
+            <div class="form-group">
+                <label for="businessType">Business Type *</label>
+                <select id="businessType" name="businessType" required>
+                    <option value="">Select business type</option>
+                    <option value="PRIVATE_PROFIT">Private For-Profit</option>
+                    <option value="PUBLIC_PROFIT">Public For-Profit</option>
+                    <option value="NON_PROFIT">Non-Profit</option>
+                    <option value="SOLE_PROPRIETOR">Sole Proprietor</option>
+                    <option value="GOVERNMENT">Government</option>
+                </select>
+            </div>
+
+            <div class="form-row" id="registrationFields">
+                <div class="form-group">
+                    <label for="businessRegistrationNumber">Business Registration Number</label>
+                    <input type="text" id="businessRegistrationNumber" name="businessRegistrationNumber" placeholder="EIN, Tax ID, or Registration Number">
+                    <small>Required for all business types except Sole Proprietor</small>
+                </div>
+                <div class="form-group">
+                    <label for="businessRegistrationAuthority">Registration Authority</label>
+                    <input type="text" id="businessRegistrationAuthority" name="businessRegistrationAuthority" placeholder="e.g., EIN, IRS">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="privacyPolicyUrl">Privacy Policy URL *</label>
+                    <input type="url" id="privacyPolicyUrl" name="privacyPolicyUrl" required placeholder="https://example.com/privacy">
+                </div>
+                <div class="form-group">
+                    <label for="termsOfServiceUrl">Terms of Service URL *</label>
+                    <input type="url" id="termsOfServiceUrl" name="termsOfServiceUrl" required placeholder="https://example.com/terms">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="street">Street Address *</label>
+                <input type="text" id="street" name="street" required>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="city">City *</label>
+                    <input type="text" id="city" name="city" required>
+                </div>
+                <div class="form-group">
+                    <label for="state">State *</label>
+                    <input type="text" id="state" name="state" required placeholder="CA">
+                </div>
+                <div class="form-group">
+                    <label for="postalCode">Postal Code *</label>
+                    <input type="text" id="postalCode" name="postalCode" required>
+                </div>
+            </div>
+
+            <h3>Contact Information</h3>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="contactFirstName">First Name *</label>
+                    <input type="text" id="contactFirstName" name="contactFirstName" required>
+                </div>
+                <div class="form-group">
+                    <label for="contactLastName">Last Name *</label>
+                    <input type="text" id="contactLastName" name="contactLastName" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="contactEmail">Email *</label>
+                    <input type="email" id="contactEmail" name="contactEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="contactPhone">Phone Number *</label>
+                    <input type="tel" id="contactPhone" name="contactPhone" required placeholder="+1234567890">
+                </div>
+            </div>
+
+            <h3>Use Case Details</h3>
+
+            <div class="form-group">
+                <label for="useCase">Use Case Category *</label>
+                <select id="useCase" name="useCase" required>
+                    <option value="">Select a use case</option>
+                    <option value="2FA">Two-Factor Authentication</option>
+                    <option value="ACCOUNT_NOTIFICATION">Account Notifications</option>
+                    <option value="CUSTOMER_CARE">Customer Care</option>
+                    <option value="DELIVERY_NOTIFICATION">Delivery Notifications</option>
+                    <option value="FRAUD_ALERT">Fraud Alerts</option>
+                    <option value="HIGHER_EDUCATION">Higher Education</option>
+                    <option value="MARKETING">Marketing</option>
+                    <option value="MIXED">Mixed</option>
+                    <option value="POLLING_VOTING">Polling and Voting</option>
+                    <option value="PUBLIC_SERVICE_ANNOUNCEMENT">Public Service Announcement</option>
+                    <option value="SECURITY_ALERT">Security Alerts</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="useCaseDescription">Describe Your Use Case *</label>
+                <textarea id="useCaseDescription" name="useCaseDescription" rows="4" required
+                    placeholder="Provide a detailed description of how you will use toll-free messaging..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="messageVolume">Expected Monthly Message Volume *</label>
+                <input type="number" id="messageVolume" name="messageVolume" required min="0" placeholder="10000">
+            </div>
+
+            <div class="form-group">
+                <label for="messageContent">Sample Message Content *</label>
+                <textarea id="messageContent" name="messageContent" rows="3" required
+                    placeholder="Example: Your order #12345 has shipped and will arrive on Friday."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="optInType">Opt-In Type *</label>
+                <select id="optInType" name="optInType" required>
+                    <option value="">Select opt-in type</option>
+                    <option value="VERBAL">Verbal Consent</option>
+                    <option value="WEB_FORM">Web Form</option>
+                    <option value="PAPER_FORM">Paper Form</option>
+                    <option value="VIA_TEXT">Via Text Message</option>
+                    <option value="MOBILE_QR_CODE">Mobile QR Code</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="helpMessage">Help Message Sample *</label>
+                <textarea id="helpMessage" name="helpMessage" rows="2" required
+                    placeholder="Example: Reply HELP for assistance or call 1-800-XXX-XXXX"></textarea>
+                <small>The message customers receive when they text HELP</small>
+            </div>
+
+            <div class="form-group">
+                <label for="stopMessage">Stop Message Sample *</label>
+                <textarea id="stopMessage" name="stopMessage" rows="2" required
+                    placeholder="Example: You have been unsubscribed and will receive no further messages."></textarea>
+                <small>The message customers receive when they opt out</small>
+            </div>
+
+            <h3>Compliance Information</h3>
+
+            <div class="form-group">
+                <label for="ageGated">Does your content involve age-gated products/services?</label>
+                <select id="ageGated" name="ageGated">
+                    <option value="false">No</option>
+                    <option value="true">Yes (e.g., alcohol, tobacco, gambling)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="additionalInformation">Additional Information (Optional)</label>
+                <textarea id="additionalInformation" name="additionalInformation" rows="3"
+                    placeholder="Any additional details about your verification request..."></textarea>
+            </div>
+
+            <button type="submit" class="submit-btn">Submit Verification</button>
+        </form>
+    `;
+
+    const form = document.getElementById('verification-form');
+    form.addEventListener('submit', handleFormSubmit);
+
+    // Toggle registration fields based on business type
+    const businessTypeSelect = document.getElementById('businessType');
+    businessTypeSelect.addEventListener('change', function() {
+        const registrationFields = document.querySelectorAll('#registrationFields input');
+        if (this.value === 'SOLE_PROPRIETOR') {
+            registrationFields.forEach(field => {
+                field.required = false;
+                field.parentElement.style.opacity = '0.6';
+            });
+        } else {
+            registrationFields.forEach(field => {
+                field.required = true;
+                field.parentElement.style.opacity = '1';
+            });
+        }
+    });
+}
+
+async function handleFormSubmit(e) {
+    e.preventDefault();
+
+    const submitBtn = e.target.querySelector('.submit-btn');
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Submitting...';
+
+    const formData = {
+        businessName: document.getElementById('businessName').value,
+        businessWebsite: document.getElementById('businessWebsite').value,
+        businessType: document.getElementById('businessType').value,
+        businessRegistrationNumber: document.getElementById('businessRegistrationNumber').value,
+        businessRegistrationAuthority: document.getElementById('businessRegistrationAuthority').value,
+        privacyPolicyUrl: document.getElementById('privacyPolicyUrl').value,
+        termsOfServiceUrl: document.getElementById('termsOfServiceUrl').value,
+        businessAddress: {
+            street: document.getElementById('street').value,
+            city: document.getElementById('city').value,
+            state: document.getElementById('state').value,
+            postalCode: document.getElementById('postalCode').value,
+            country: 'US'
+        },
+        businessContactFirstName: document.getElementById('contactFirstName').value,
+        businessContactLastName: document.getElementById('contactLastName').value,
+        businessContactEmail: document.getElementById('contactEmail').value,
+        businessContactPhone: document.getElementById('contactPhone').value,
+        useCase: document.getElementById('useCase').value,
+        useCaseDescription: document.getElementById('useCaseDescription').value,
+        messageVolume: document.getElementById('messageVolume').value,
+        messageContent: document.getElementById('messageContent').value,
+        helpMessage: document.getElementById('helpMessage').value,
+        stopMessage: document.getElementById('stopMessage').value,
+        optInType: document.getElementById('optInType').value,
+        ageGated: document.getElementById('ageGated').value === 'true',
+        additionalInformation: document.getElementById('additionalInformation').value
+    };
+
+    try {
+        const response = await fetch('/api/verification/submit', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData)
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+            showSuccessMessage(result);
+        } else {
+            throw new Error(result.message || 'Submission failed');
+        }
+    } catch (error) {
+        console.error('Submission error:', error);
+        showErrorMessage(error);
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Submit Verification';
+    }
+}
+
+function showSuccessMessage(result) {
+    const container = document.getElementById('twilio-compliance-embeddable');
+    container.innerHTML = `
+        <div style="text-align: center; padding: 3rem;">
+            <div style="font-size: 4rem; color: #14B053; margin-bottom: 1rem;">✓</div>
+            <h3 style="color: #121C2D; margin-bottom: 1rem;">Verification Submitted Successfully!</h3>
+            <p style="color: #606B85; margin-bottom: 1rem;">
+                Thank you for submitting your toll-free number verification.
+                We'll review your information and get back to you shortly.
+            </p>
+            ${result.verificationSid ? `
+                <div style="background: #f4f4f6; padding: 1rem; border-radius: 4px; margin: 1.5rem 0;">
+                    <p style="color: #606B85; font-size: 0.9rem; margin: 0;">
+                        Verification ID: <strong>${result.verificationSid}</strong>
+                    </p>
+                    <p style="color: #606B85; font-size: 0.9rem; margin: 0.5rem 0 0 0;">
+                        Status: <strong>${result.status}</strong>
+                    </p>
+                </div>
+            ` : ''}
+            <button onclick="location.reload()" style="
+                background: #0263E0;
+                color: white;
+                border: none;
+                padding: 0.75rem 2rem;
+                border-radius: 4px;
+                font-size: 1rem;
+                cursor: pointer;
+                transition: background 0.3s;
+            ">Submit Another Verification</button>
+        </div>
+    `;
+}
+
+function showErrorMessage(error) {
+    const container = document.getElementById('twilio-compliance-embeddable');
+    container.innerHTML = `
+        <div style="text-align: center; padding: 3rem;">
+            <div style="font-size: 4rem; color: #D61F1F; margin-bottom: 1rem;">⚠</div>
+            <h3 style="color: #121C2D; margin-bottom: 1rem;">Submission Error</h3>
+            <p style="color: #606B85; margin-bottom: 2rem;">
+                ${error.message || 'An error occurred while submitting your verification. Please try again.'}
+            </p>
+            <button onclick="location.reload()" style="
+                background: #0263E0;
+                color: white;
+                border: none;
+                padding: 0.75rem 2rem;
+                border-radius: 4px;
+                font-size: 1rem;
+                cursor: pointer;
+                transition: background 0.3s;
+            ">Try Again</button>
+        </div>
+    `;
+}
+
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+            target.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+    });
+});

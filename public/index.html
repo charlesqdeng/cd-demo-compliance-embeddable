@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CD Demo - Toll Free Number Verification</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <h1>CD Demo</h1>
+            </div>
+            <nav class="nav">
+                <a href="#home">Home</a>
+                <a href="#verify">Verify Number</a>
+                <a href="#support">Support</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main">
+        <section class="hero">
+            <div class="container">
+                <h2>Toll Free Number Verification</h2>
+                <p>Submit your verification documents securely and get your toll-free number approved quickly.</p>
+            </div>
+        </section>
+
+        <section class="verification-section">
+            <div class="container">
+                <div class="info-card">
+                    <h3>What You'll Need</h3>
+                    <ul>
+                        <li>Business name, type, and registration details</li>
+                        <li>Business website and physical address</li>
+                        <li>Privacy Policy and Terms of Service URLs</li>
+                        <li>Contact information</li>
+                        <li>Messaging use case description</li>
+                        <li>Sample message content (standard, HELP, STOP)</li>
+                        <li>Opt-in workflow details</li>
+                        <li>Expected monthly message volume</li>
+                    </ul>
+                </div>
+
+                <div class="embeddable-container">
+                    <div id="twilio-compliance-embeddable"></div>
+                    <div id="loading-state" class="loading">
+                        <div class="spinner"></div>
+                        <p>Loading verification form...</p>
+                    </div>
+                    <div id="error-state" class="error-message" style="display: none;">
+                        <p>Unable to load the verification form. Please try again later or contact support.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="help-section">
+            <div class="container">
+                <h3>Need Help?</h3>
+                <div class="help-grid">
+                    <div class="help-card">
+                        <h4>📚 Documentation</h4>
+                        <p>Learn about toll-free verification requirements and best practices.</p>
+                    </div>
+                    <div class="help-card">
+                        <h4>💬 Support</h4>
+                        <p>Our team is here to help with any questions about the verification process.</p>
+                    </div>
+                    <div class="help-card">
+                        <h4>⏱️ Status</h4>
+                        <p>Track your verification status and get real-time updates.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 CD Demo. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="#privacy">Privacy Policy</a>
+                <a href="#terms">Terms of Service</a>
+                <a href="#contact">Contact Us</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
