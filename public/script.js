@@ -157,7 +157,14 @@ async function initializeVerificationForm() {
 
             <div class="form-group">
                 <label for="messageVolume">Expected Monthly Message Volume *</label>
-                <input type="number" id="messageVolume" name="messageVolume" required min="0" placeholder="10000">
+                <select id="messageVolume" name="messageVolume" required>
+                    <option value="">Select message volume</option>
+                    <option value="10">10 - 1,000 messages/month</option>
+                    <option value="1000">1,000 - 10,000 messages/month</option>
+                    <option value="10000">10,000 - 100,000 messages/month</option>
+                    <option value="100000">100,000 - 250,000 messages/month</option>
+                    <option value="250000">250,000+ messages/month</option>
+                </select>
             </div>
 
             <div class="form-group">
