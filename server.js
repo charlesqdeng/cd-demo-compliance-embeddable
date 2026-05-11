@@ -249,7 +249,7 @@ app.post('/api/verification/submit', async (req, res) => {
                 businessContactEmail: businessContactEmail,
                 businessContactPhone: businessContactPhone,
                 notificationEmail: isvNotificationEmail || businessContactEmail,
-                useCase: useCase,
+                useCaseCategories: [useCase], // Must be an array
                 useCaseSummary: useCaseDescription,
                 productionMessageSample: messageContent,
                 optInType: optInType,
