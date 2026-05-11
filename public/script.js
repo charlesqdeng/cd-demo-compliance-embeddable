@@ -23,6 +23,15 @@ async function initializeVerificationForm() {
 
     container.innerHTML = `
         <form id="verification-form" class="verification-form">
+            <h3>Toll-Free Number Information</h3>
+
+            <div class="form-group">
+                <label for="tollfreePhoneNumber">Toll-Free Phone Number *</label>
+                <input type="tel" id="tollfreePhoneNumber" name="tollfreePhoneNumber" required
+                    placeholder="+18001234567" pattern="\\+1[8][0-9]{9}">
+                <small>Enter your toll-free number in E.164 format (e.g., +18001234567). Must start with +1800, +1888, +1877, +1866, +1855, or +1844</small>
+            </div>
+
             <h3>Business Information</h3>
 
             <div class="form-group">
@@ -149,6 +158,22 @@ async function initializeVerificationForm() {
                 <label for="messageContent">Sample Message Content *</label>
                 <textarea id="messageContent" name="messageContent" rows="3" required
                     placeholder="Example: Your order #12345 has shipped and will arrive on Friday."></textarea>
+                <small>Provide 1-2 realistic examples of messages you'll send</small>
+            </div>
+
+            <div class="form-group">
+                <label for="hasLinks">Do your messages contain links or phone numbers?</label>
+                <select id="hasLinks" name="hasLinks">
+                    <option value="false">No</option>
+                    <option value="true">Yes</option>
+                </select>
+            </div>
+
+            <div class="form-group" id="linksField" style="display: none;">
+                <label for="linkExamples">Example Links/Phone Numbers</label>
+                <textarea id="linkExamples" name="linkExamples" rows="2"
+                    placeholder="https://example.com/track-order&#10;1-800-123-4567"></textarea>
+                <small>Provide examples of URLs or phone numbers included in messages</small>
             </div>
 
             <div class="form-group">
@@ -164,6 +189,13 @@ async function initializeVerificationForm() {
             </div>
 
             <div class="form-group">
+                <label for="optInWorkflow">Opt-In Workflow Description *</label>
+                <textarea id="optInWorkflow" name="optInWorkflow" rows="3" required
+                    placeholder="Describe how customers consent to receive messages. Example: Users check a box on our website during checkout and click 'Agree to receive SMS updates'"></textarea>
+                <small>Explain the step-by-step process customers follow to opt in</small>
+            </div>
+
+            <div class="form-group">
                 <label for="helpMessage">Help Message Sample *</label>
                 <textarea id="helpMessage" name="helpMessage" rows="2" required
                     placeholder="Example: Reply HELP for assistance or call 1-800-XXX-XXXX"></textarea>
@@ -171,10 +203,22 @@ async function initializeVerificationForm() {
             </div>
 
             <div class="form-group">
+                <label for="helpKeywords">Help Keywords</label>
+                <input type="text" id="helpKeywords" name="helpKeywords" placeholder="HELP, INFO, SUPPORT">
+                <small>Keywords customers can text to get help (comma separated)</small>
+            </div>
+
+            <div class="form-group">
                 <label for="stopMessage">Stop Message Sample *</label>
                 <textarea id="stopMessage" name="stopMessage" rows="2" required
                     placeholder="Example: You have been unsubscribed and will receive no further messages."></textarea>
                 <small>The message customers receive when they opt out</small>
+            </div>
+
+            <div class="form-group">
+                <label for="stopKeywords">Stop Keywords</label>
+                <input type="text" id="stopKeywords" name="stopKeywords" placeholder="STOP, CANCEL, UNSUBSCRIBE, QUIT">
+                <small>Keywords customers can text to opt out (comma separated)</small>
             </div>
 
             <h3>Compliance Information</h3>
@@ -216,6 +260,19 @@ async function initializeVerificationForm() {
             });
         }
     });
+
+    // Toggle links field based on whether messages contain links
+    const hasLinksSelect = document.getElementById('hasLinks');
+    const linksField = document.getElementById('linksField');
+    hasLinksSelect.addEventListener('change', function() {
+        if (this.value === 'true') {
+            linksField.style.display = 'block';
+            document.getElementById('linkExamples').required = true;
+        } else {
+            linksField.style.display = 'none';
+            document.getElementById('linkExamples').required = false;
+        }
+    });
 }
 
 async function handleFormSubmit(e) {
@@ -226,6 +283,7 @@ async function handleFormSubmit(e) {
     submitBtn.textContent = 'Submitting...';
 
     const formData = {
+        tollfreePhoneNumber: document.getElementById('tollfreePhoneNumber').value,
         businessName: document.getElementById('businessName').value,
         businessWebsite: document.getElementById('businessWebsite').value,
         businessType: document.getElementById('businessType').value,
@@ -248,9 +306,14 @@ async function handleFormSubmit(e) {
         useCaseDescription: document.getElementById('useCaseDescription').value,
         messageVolume: document.getElementById('messageVolume').value,
         messageContent: document.getElementById('messageContent').value,
-        helpMessage: document.getElementById('helpMessage').value,
-        stopMessage: document.getElementById('stopMessage').value,
+        hasLinks: document.getElementById('hasLinks').value === 'true',
+        linkExamples: document.getElementById('linkExamples').value,
         optInType: document.getElementById('optInType').value,
+        optInWorkflow: document.getElementById('optInWorkflow').value,
+        helpMessage: document.getElementById('helpMessage').value,
+        helpKeywords: document.getElementById('helpKeywords').value,
+        stopMessage: document.getElementById('stopMessage').value,
+        stopKeywords: document.getElementById('stopKeywords').value,
         ageGated: document.getElementById('ageGated').value === 'true',
         additionalInformation: document.getElementById('additionalInformation').value
     };
@@ -281,17 +344,21 @@ async function handleFormSubmit(e) {
 
 function showSuccessMessage(result) {
     const container = document.getElementById('twilio-compliance-embeddable');
+    const tfn = document.getElementById('tollfreePhoneNumber')?.value || 'N/A';
     container.innerHTML = `
         <div style="text-align: center; padding: 3rem;">
             <div style="font-size: 4rem; color: #14B053; margin-bottom: 1rem;">✓</div>
             <h3 style="color: #121C2D; margin-bottom: 1rem;">Verification Submitted Successfully!</h3>
             <p style="color: #606B85; margin-bottom: 1rem;">
-                Thank you for submitting your toll-free number verification.
+                Thank you for submitting your toll-free number verification for <strong>${tfn}</strong>.
                 We'll review your information and get back to you shortly.
             </p>
             ${result.verificationSid ? `
                 <div style="background: #f4f4f6; padding: 1rem; border-radius: 4px; margin: 1.5rem 0;">
                     <p style="color: #606B85; font-size: 0.9rem; margin: 0;">
+                        Toll-Free Number: <strong>${tfn}</strong>
+                    </p>
+                    <p style="color: #606B85; font-size: 0.9rem; margin: 0.5rem 0 0 0;">
                         Verification ID: <strong>${result.verificationSid}</strong>
                     </p>
                     <p style="color: #606B85; font-size: 0.9rem; margin: 0.5rem 0 0 0;">

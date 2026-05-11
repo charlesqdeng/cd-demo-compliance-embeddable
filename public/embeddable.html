@@ -24,7 +24,7 @@
         <section class="hero">
             <div class="container">
                 <h2>Toll Free Number Verification</h2>
-                <p>Submit your verification documents securely and get your toll-free number approved quickly.</p>
+                <p>Submit your verification documents securely using Twilio's official compliance portal.</p>
             </div>
         </section>
 
@@ -46,13 +46,46 @@
                 </div>
 
                 <div class="embeddable-container">
-                    <div id="twilio-compliance-embeddable"></div>
-                    <div id="loading-state" class="loading">
-                        <div class="spinner"></div>
-                        <p>Loading verification form...</p>
+                    <!-- Step 1: Enter toll-free number -->
+                    <div id="tfn-input-section">
+                        <h3>Enter Toll-Free Number</h3>
+                        <form id="tfn-form">
+                            <div class="form-group">
+                                <label for="tollfreeNumber">Toll-Free Phone Number *</label>
+                                <input type="tel" id="tollfreeNumber" name="tollfreeNumber" required
+                                    placeholder="+18001234567" pattern="\+1[8][0-9]{9}">
+                                <small>Enter your toll-free number in E.164 format (e.g., +18001234567)</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="customerEmail">Contact Email (Optional)</label>
+                                <input type="email" id="customerEmail" name="customerEmail"
+                                    placeholder="your@email.com">
+                                <small>We'll send updates to the ISV notification email by default</small>
+                            </div>
+                            <button type="submit" class="submit-btn">Start Verification</button>
+                        </form>
                     </div>
+
+                    <!-- Step 2: Twilio Compliance Embeddable -->
+                    <div id="twilio-embeddable-section" style="display: none;">
+                        <div id="embeddable-header" class="embeddable-header">
+                            <p>Verifying: <strong id="display-tfn"></strong></p>
+                        </div>
+                        <iframe id="twilio-embeddable-iframe"
+                                style="width: 100%; height: 800px; border: none; border-radius: 4px;">
+                        </iframe>
+                    </div>
+
+                    <!-- Loading state -->
+                    <div id="loading-state" class="loading" style="display: none;">
+                        <div class="spinner"></div>
+                        <p>Initializing verification form...</p>
+                    </div>
+
+                    <!-- Error state -->
                     <div id="error-state" class="error-message" style="display: none;">
-                        <p>Unable to load the verification form. Please try again later or contact support.</p>
+                        <p id="error-message-text">Unable to load the verification form. Please try again later or contact support.</p>
+                        <button onclick="location.reload()" class="submit-btn">Try Again</button>
                     </div>
                 </div>
             </div>
@@ -72,7 +105,7 @@
                     </div>
                     <div class="help-card">
                         <h4>⏱️ Status</h4>
-                        <p>Track your verification status and get real-time updates.</p>
+                        <p>Track your verification status and get real-time updates via email.</p>
                     </div>
                 </div>
             </div>
@@ -90,6 +123,6 @@
         </div>
     </footer>
 
-    <script src="script.js"></script>
+    <script src="embeddable.js"></script>
 </body>
 </html>
