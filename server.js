@@ -273,6 +273,11 @@ app.post('/api/verification/submit', async (req, res) => {
                 businessContactEmail: businessContactEmail,
                 businessContactPhone: businessContactPhone,
                 notificationEmail: isvNotificationEmail || businessContactEmail,
+                // Business Type and Registration (Required)
+                businessType: businessType,
+                businessRegistrationNumber: businessRegistrationNumber || '',
+                businessRegistrationAuthority: businessRegistrationAuthority || '',
+                businessRegistrationCountry: businessAddress.country || 'US',
                 useCaseCategories: [useCase], // Must be an array
                 useCaseSummary: useCaseDescription,
                 productionMessageSample: messageContent,
