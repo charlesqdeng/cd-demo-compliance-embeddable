@@ -187,6 +187,30 @@ app.post('/api/verification/submit', async (req, res) => {
 
         console.log('Received verification request for TFN:', tollfreePhoneNumber, '- Business:', businessName);
 
+        // Look up the phone number to get its SID
+        let phoneNumberSid;
+        try {
+            const phoneNumbers = await client.incomingPhoneNumbers.list({
+                phoneNumber: tollfreePhoneNumber
+            });
+
+            if (phoneNumbers.length === 0) {
+                return res.status(400).json({
+                    success: false,
+                    message: `Toll-free number ${tollfreePhoneNumber} not found in your Twilio account. Please purchase it first.`
+                });
+            }
+
+            phoneNumberSid = phoneNumbers[0].sid;
+            console.log('Found phone number SID:', phoneNumberSid);
+        } catch (lookupError) {
+            console.error('Error looking up phone number:', lookupError);
+            return res.status(500).json({
+                success: false,
+                message: 'Failed to look up phone number. Please verify the number exists in your Twilio account.'
+            });
+        }
+
         // Validate toll-free number format - must be exactly one number
         if (!tollfreePhoneNumber ||
             tollfreePhoneNumber.includes(',') ||
@@ -234,7 +258,7 @@ app.post('/api/verification/submit', async (req, res) => {
 
         const tollfreeVerification = await client.messaging.v1.tollfreeVerifications
             .create({
-                tollfreePhoneNumber: tollfreePhoneNumber,
+                tollfreePhoneNumberSid: phoneNumberSid,
                 businessName: businessName,
                 businessWebsite: businessWebsite,
                 websiteUrl: privacyPolicyUrl,
