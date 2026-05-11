@@ -81,10 +81,17 @@ app.post('/api/embeddable/initialize', async (req, res) => {
 
     } catch (error) {
         console.error('Error initializing embeddable:', error);
+        console.error('Error details:', {
+            message: error.message,
+            code: error.code,
+            status: error.status,
+            moreInfo: error.moreInfo
+        });
         res.status(500).json({
             success: false,
             error: error.message,
-            message: 'Failed to initialize verification form. Please try again.'
+            code: error.code,
+            message: 'Failed to initialize verification form. Please check server logs for details.'
         });
     }
 });
