@@ -7,12 +7,15 @@ A professional, customer-facing website for submitting Toll Free Number verifica
 - 🎨 Modern, CD Demo branded interface
 - 📱 Fully responsive design for mobile and desktop
 - 🔒 Secure backend with Node.js + Express
-- ✅ Complete toll-free verification form
+- ✅ Complete toll-free verification form with field-by-field guidance
 - 📊 Real-time submission to Twilio API
 - 🎯 Success/error feedback with verification tracking
 - 🔐 Secure credential management via environment variables
 - 🤖 Automatic TrustHub Customer Profile creation
 - 📋 Complete business information collection and validation
+- 💡 Interactive help system with ℹ️ icons for each field
+- 📖 Comprehensive examples (approved/rejected) from Twilio docs
+- ⚠️ ISV vs end-user business guidance to prevent rejections
 
 ## Quick Start
 
@@ -57,14 +60,17 @@ The verification form collects all required information for Twilio toll-free ver
 - Business name, website, physical address
 
 ### Contact Information
-- First name, last name, email, phone number
+- First name, last name, email, phone number (4 separate fields as required by Twilio)
+- **Note:** Business contact is for the END-USER business, not ISV
 
 ### Use Case Details
 - Use case category (2FA, Marketing, Customer Care, etc.)
-- Detailed use case description
-- Expected monthly message volume
-- Sample message content
-- Opt-in type (Web form, Verbal, SMS, etc.)
+- Detailed use case description (must be specific - vague descriptions are #1 rejection reason)
+- Expected monthly message volume (11 tiers: 10, 100, 1K, 10K, 100K, 250K, 500K, 750K, 1M, 5M, 10M+)
+- Sample message content (must match use case category and include STOP language)
+- Opt-in type (Web form, Verbal, Paper form, Via text, QR code)
+- Opt-in workflow description (detailed step-by-step process)
+- Opt-in image URLs (screenshots/documentation demonstrating opt-in)
 
 ## Twilio Integration
 
@@ -234,9 +240,12 @@ Required for all deployments:
 ```env
 TWILIO_ACCOUNT_SID=ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 TWILIO_AUTH_TOKEN=your_auth_token
+ISV_NOTIFICATION_EMAIL=your-isv-email@example.com
 PORT=3000
 NODE_ENV=production
 ```
+
+**Important:** `ISV_NOTIFICATION_EMAIL` receives ALL verification notifications (approval/rejection/updates) for all customer submissions. This should be the ISV's email, not the end-customer's email.
 
 ### Deployment Options
 
@@ -281,10 +290,18 @@ CMD ["npm", "start"]
 - Restart server after updating `.env`
 - Ensure no extra spaces in credentials
 
+## Documentation
+
+- **[VERIFICATION_GUIDE.md](VERIFICATION_GUIDE.md)** - Complete guide to successful toll-free verification
+- **[SETUP.md](SETUP.md)** - Detailed setup instructions
+- **[CUSTOMIZATION.md](CUSTOMIZATION.md)** - Branding and customization guide
+- **[EMBEDDABLE_GUIDE.md](EMBEDDABLE_GUIDE.md)** - Twilio embeddable integration guide
+
 ## Resources
 
 - [Twilio Toll-Free Verification Docs](https://www.twilio.com/docs/messaging/services/toll-free-verification)
 - [Twilio Messaging API Reference](https://www.twilio.com/docs/messaging/api/toll-free-verification-resource)
+- [Twilio Required Information Guide](https://help.twilio.com/articles/13264118705051)
 - [Use Case Requirements](https://support.twilio.com/hc/en-us/articles/1260803225669-Message-throughput-MPS-and-Trust-Score-for-A2P-10DLC-in-the-US)
 
 ## Support

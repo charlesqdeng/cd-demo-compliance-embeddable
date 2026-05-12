@@ -159,12 +159,19 @@ async function initializeVerificationForm() {
                 <label for="messageVolume">Expected Monthly Message Volume *</label>
                 <select id="messageVolume" name="messageVolume" required>
                     <option value="">Select message volume</option>
-                    <option value="10">10 - 1,000 messages/month</option>
-                    <option value="1000">1,000 - 10,000 messages/month</option>
-                    <option value="10000">10,000 - 100,000 messages/month</option>
-                    <option value="100000">100,000 - 250,000 messages/month</option>
-                    <option value="250000">250,000+ messages/month</option>
+                    <option value="10">Up to 10 messages/month</option>
+                    <option value="100">Up to 100 messages/month</option>
+                    <option value="1000">Up to 1,000 messages/month</option>
+                    <option value="10000">Up to 10,000 messages/month</option>
+                    <option value="100000">Up to 100,000 messages/month</option>
+                    <option value="250000">Up to 250,000 messages/month</option>
+                    <option value="500000">Up to 500,000 messages/month</option>
+                    <option value="750000">Up to 750,000 messages/month</option>
+                    <option value="1000000">Up to 1,000,000 messages/month</option>
+                    <option value="5000000">Up to 5,000,000 messages/month</option>
+                    <option value="10000000">10,000,000+ messages/month</option>
                 </select>
+                <small>Choose the closest value. If volume will increase, use where you expect to be in 6 months.</small>
             </div>
 
             <div class="form-group">

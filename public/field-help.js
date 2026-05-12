@@ -32,7 +32,10 @@ function addFieldHelp() {
         'privacyPolicyUrl': 'privacyPolicyUrl',
         'termsOfServiceUrl': 'termsOfServiceUrl',
         'street': 'businessAddress',
-        'contactFirstName': 'contactInformation',
+        'contactFirstName': 'contactFirstName',
+        'contactLastName': 'contactLastName',
+        'contactEmail': 'contactEmail',
+        'contactPhone': 'contactPhone',
         'useCase': 'useCaseCategory',
         'useCaseDescription': 'useCaseDescription',
         'messageVolume': 'messageVolume',
@@ -41,7 +44,8 @@ function addFieldHelp() {
         'stopMessage': 'stopMessage',
         'optInType': 'optInType',
         'optInWorkflow': 'optInWorkflow',
-        'optInImageUrls': 'optInImageUrls'
+        'optInImageUrls': 'optInImageUrls',
+        'additionalInformation': 'additionalInformation'
     };
 
     Object.keys(fieldMappings).forEach(fieldId => {
@@ -161,6 +165,24 @@ function showGuidanceModal(guidance) {
                     `<li><strong>${key}:</strong> ${desc}</li>`
                 ).join('')}
             </ul>
+        </div>`;
+    }
+
+    if (guidance.requirements) {
+        html += `<div class="guidance-section">
+            <h4>⚠️ Documentation Requirements by Type:</h4>
+            <ul>
+                ${Object.entries(guidance.requirements).map(([key, desc]) =>
+                    `<li><strong>${key}:</strong> ${desc}</li>`
+                ).join('')}
+            </ul>
+        </div>`;
+    }
+
+    if (guidance.verbalExample) {
+        html += `<div class="guidance-section guidance-good">
+            <h4>VERBAL Opt-In Script Example:</h4>
+            <p style="white-space: pre-wrap;">${guidance.verbalExample}</p>
         </div>`;
     }
 

@@ -16,7 +16,11 @@ npm install
 TWILIO_ACCOUNT_SID=ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 TWILIO_AUTH_TOKEN=your_auth_token_here
 ISV_NOTIFICATION_EMAIL=your-isv-email@example.com
+PORT=3000
+NODE_ENV=development
 ```
+
+**⚠️ Important:** All verification notifications (approval/rejection/status) will be sent to `ISV_NOTIFICATION_EMAIL`. This should be YOUR email as the ISV, not your customer's email.
 
 ## Step 3: Start the Server
 
@@ -50,13 +54,17 @@ Visit: **http://localhost:3000/embeddable.html**
 4. Customer completes verification
 5. Success message with inquiry ID
 
-### Option 2: Custom Form
+### Option 2: Custom Form with Interactive Guidance
 Visit: **http://localhost:3000/index.html**
 
-- ✅ Full UI control
-- ✅ Custom validation
+- ✅ Full UI control with CD Demo branding
+- ✅ Interactive help system with ℹ️ icons on every field
+- ✅ Field-by-field guidance from official Twilio docs
+- ✅ Approved/rejected examples for each field
 - ✅ All fields visible at once
 - ✅ **Automatic TrustHub Customer Profile creation**
+- ✅ Enhanced message volume options (11 tiers)
+- ✅ ISV vs end-user business warnings
 - ⚠️ No resume functionality
 - ⚠️ Must maintain field updates manually
 
@@ -74,17 +82,20 @@ See [TRUSTHUB.md](TRUSTHUB.md) for detailed information.
 
 For toll-free verification, customers must provide:
 - Toll-free phone number (E.164 format: +18001234567) - **Must be purchased in your Twilio account first**
+- **END-USER business information** (not ISV info unless ISV is sole content creator)
 - Business name, type, and registration details
-- Business website with https:// (e.g., https://example.com)
-- Physical business address
+- Business website with https:// (social media acceptable if set to public)
+- Physical business address (no P.O. Boxes)
 - Privacy Policy URL with https://
 - Terms of Service URL with https://
-- Contact information
+- Contact information (4 separate fields: First Name, Last Name, Email, Phone)
 - Messaging use case category (select from dropdown)
-- Detailed use case description
-- Sample message content (standard, HELP, STOP)
-- Opt-in workflow details
-- Expected monthly message volume (select from ranges)
+- **Detailed use case description** (vague descriptions = #1 rejection reason)
+- Sample message content that **matches the use case category**
+- HELP and STOP message responses
+- Opt-in type and detailed workflow description
+- Opt-in documentation (screenshots/images demonstrating the opt-in process)
+- Expected monthly message volume (11 tiers from 10 to 10M+)
 
 ## Testing the Embeddable
 
@@ -117,6 +128,8 @@ For toll-free verification, customers must provide:
 
 ## Next Steps
 
-- **Embeddable Details**: See [EMBEDDABLE_GUIDE.md](EMBEDDABLE_GUIDE.md) for complete integration documentation
-- **Production Deployment**: See [README.md](README.md) for security best practices
-- **API Reference**: See server.js for all available endpoints
+- **📖 Verification Success Guide**: See [VERIFICATION_GUIDE.md](VERIFICATION_GUIDE.md) for tips to get approved on first try
+- **🎨 Customization**: See [CUSTOMIZATION.md](CUSTOMIZATION.md) for branding options
+- **🔧 Embeddable Details**: See [EMBEDDABLE_GUIDE.md](EMBEDDABLE_GUIDE.md) for complete integration documentation
+- **🚀 Production Deployment**: See [README.md](README.md) for security best practices
+- **📡 API Reference**: See server.js for all available endpoints

@@ -272,7 +272,7 @@ app.post('/api/verification/submit', async (req, res) => {
                 businessContactLastName: businessContactLastName,
                 businessContactEmail: businessContactEmail,
                 businessContactPhone: businessContactPhone,
-                notificationEmail: isvNotificationEmail || businessContactEmail,
+                notificationEmail: isvNotificationEmail, // ISV receives all notifications
                 // Business Type and Registration (Required)
                 businessType: businessType,
                 businessRegistrationNumber: businessRegistrationNumber || '',
