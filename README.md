@@ -13,7 +13,11 @@ A professional, customer-facing website for submitting Toll Free Number verifica
 - 🔐 Secure credential management via environment variables
 - 🤖 Automatic TrustHub Customer Profile creation
 - 📋 Complete business information collection and validation
-- 💡 Interactive help system with ℹ️ icons for each field
+- 💡 **Interactive help system with ℹ️ icons for each field**
+  - Click any ℹ️ icon to see detailed guidance
+  - Approved/rejected examples from official Twilio docs
+  - Tips, common mistakes, and best practices
+  - Opt-in workflow examples (VERBAL IVR scripts, VIA_TEXT keywords, etc.)
 - 📖 Comprehensive examples (approved/rejected) from Twilio docs
 - ⚠️ ISV vs end-user business guidance to prevent rejections
 
@@ -51,6 +55,27 @@ npm start
   - `POST /api/verification/submit` - Submit verification via custom form (auto-creates TrustHub profile)
   - `GET /api/verification/status/:sid` - Check verification status
   - `GET /api/health` - Server health check
+
+## Interactive Help System
+
+Every form field has a clickable ℹ️ icon that displays:
+- **Field purpose and requirements**
+- **✅ Approved examples** from Twilio documentation
+- **❌ Rejected examples** with reasons why they fail
+- **💡 Tips and best practices** to avoid rejections
+- **⚠️ Common mistakes** to watch out for
+
+**How to use:**
+1. Look for the ℹ️ icon next to any form field label
+2. Click the icon to open the help modal
+3. Read through examples, tips, and requirements
+4. Use the approved examples as templates for your submission
+
+**Special Examples Available:**
+- **VERBAL Opt-In**: Complete IVR script example
+- **VIA_TEXT Opt-In**: Keyword campaign workflow example
+- **Message Samples**: Examples that match each use case category
+- **Opt-In Documentation**: What to include for each opt-in type
 
 ## Form Fields
 

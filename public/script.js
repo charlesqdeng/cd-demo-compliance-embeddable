@@ -340,6 +340,11 @@ async function initializeVerificationForm() {
             optInImageUrlsField.required = true;
         }
     });
+
+    // Initialize field help icons after form is generated
+    if (typeof addFieldHelp === 'function') {
+        addFieldHelp();
+    }
 }
 
 async function handleFormSubmit(e) {

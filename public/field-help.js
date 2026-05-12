@@ -191,8 +191,14 @@ function showGuidanceModal(guidance) {
 }
 
 // Initialize when DOM is ready
+// NOTE: This is now called manually from script.js after the form is dynamically generated
+// to ensure proper timing. Keep this function available for manual invocation.
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', addFieldHelp);
 } else {
-    addFieldHelp();
+    // Don't auto-initialize on index.html since form is dynamic
+    // Only auto-initialize if form already exists (for static pages)
+    if (document.getElementById('verification-form')) {
+        addFieldHelp();
+    }
 }
