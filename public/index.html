@@ -32,22 +32,38 @@
         <section class="verification-section">
             <div class="container">
                 <div class="info-card">
-                    <h3>What You'll Need</h3>
+                    <h3>📋 What You'll Need</h3>
+                    <p style="color: var(--text-light); margin-bottom: 1rem; font-size: 0.95rem;">
+                        Click the <span class="info-icon" style="display: inline-block; transform: scale(0.9);">ℹ</span> icons next to form fields for detailed guidance, examples, and tips.
+                    </p>
                     <ul>
-                        <li>Toll-free phone number (e.g., +18001234567) - <strong>Must be purchased in your Twilio account first</strong></li>
-                        <li>Business name, type, and registration details</li>
-                        <li>Business website with https:// (e.g., https://example.com)</li>
-                        <li>Physical business address</li>
-                        <li>Privacy Policy URL with https:// (e.g., https://example.com/privacy)</li>
-                        <li>Terms of Service URL with https:// (e.g., https://example.com/terms)</li>
-                        <li>Contact information (name, email, phone)</li>
-                        <li>Messaging use case description</li>
-                        <li>Sample message content (standard, HELP, STOP)</li>
-                        <li>Opt-in workflow details and screenshots</li>
-                        <li>Expected monthly message volume</li>
+                        <li><strong>Toll-free number</strong> - Must be purchased in your Twilio account</li>
+                        <li><strong>Business information</strong> - Legal name, type, registration number</li>
+                        <li><strong>Physical address</strong> - No P.O. Boxes</li>
+                        <li><strong>Website URLs</strong> - Business site, privacy policy, terms (must include https://)</li>
+                        <li><strong>Contact details</strong> - Business email and phone</li>
+                        <li><strong>Use case</strong> - Detailed description of how you'll use messaging</li>
+                        <li><strong>Message samples</strong> - Realistic examples including STOP language</li>
+                        <li><strong>Opt-in process</strong> - How customers consent to messages</li>
+                        <li><strong>Screenshots</strong> - Images showing opt-in workflow (if applicable)</li>
                     </ul>
-                    <div style="background: #FFF4E5; border-left: 4px solid #FF9800; padding: 0.75rem; margin-top: 1rem; border-radius: 4px;">
-                        <strong>⚠️ Important:</strong> All URLs must include <code>https://</code> or <code>http://</code> prefix.
+
+                    <div style="background: #E7F3FF; border-left: 4px solid var(--primary-color); padding: 0.75rem; margin-top: 1rem; border-radius: 4px;">
+                        <strong>💡 Pro Tip:</strong> Be specific and detailed in your descriptions. Vague answers lead to rejection.
+                    </div>
+
+                    <div style="background: #FFF4E5; border-left: 4px solid #FF9800; padding: 0.75rem; margin-top: 0.75rem; border-radius: 4px;">
+                        <strong>⚠️ Common Mistakes:</strong>
+                        <ul style="margin: 0.5rem 0 0 1rem; padding: 0; font-size: 0.9rem;">
+                            <li>Using P.O. Box instead of physical address</li>
+                            <li>Forgetting https:// in URLs</li>
+                            <li>Vague use case descriptions</li>
+                            <li>No STOP language in message samples</li>
+                        </ul>
+                    </div>
+
+                    <div style="background: #F0FDF4; border-left: 4px solid var(--success-color); padding: 0.75rem; margin-top: 0.75rem; border-radius: 4px;">
+                        <strong>✅ Review Time:</strong> 1-2 business days
                     </div>
                 </div>
 
@@ -97,6 +113,8 @@
     </footer>
 
     <script src="branding.js"></script>
+    <script src="guidance.js"></script>
+    <script src="field-help.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
