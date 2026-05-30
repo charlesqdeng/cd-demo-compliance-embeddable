@@ -121,3 +121,6 @@ dist
 
 # Archive/deprecated documentation
 docs_archive/
+
+# Claude Code configuration
+.claude/
