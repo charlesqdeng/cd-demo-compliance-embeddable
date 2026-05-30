@@ -124,3 +124,7 @@ docs_archive/
 
 # Claude Code configuration
 .claude/
+
+# Internal documentation (not customer-facing)
+GUIDE.md
+CHANGELOG.md

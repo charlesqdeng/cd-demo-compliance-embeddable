@@ -12,8 +12,6 @@ A professional, customer-facing website for submitting Toll Free Number verifica
 
 **Starting February 17, 2026**, Business Registration Numbers are **REQUIRED** for all toll-free verification submissions.
 
-📖 **See [GUIDE.md](GUIDE.md) for complete documentation** - single comprehensive guide covering setup, BRN requirements, verification best practices, and customization.
-
 ## Features
 
 - 🎨 Modern, CD Demo branded interface
@@ -48,8 +46,6 @@ npm start
 # 4. Open browser
 # Visit http://localhost:3000
 ```
-
-📖 **[Read the Complete Guide →](GUIDE.md)**
 
 ## Architecture
 
@@ -327,10 +323,6 @@ CMD ["npm", "start"]
 - Restart server after updating `.env`
 - Ensure no extra spaces in credentials
 
-## Documentation
-
-- **[GUIDE.md](GUIDE.md)** - 📖 **Complete comprehensive guide** (setup, BRN requirements, verification, customization, troubleshooting)
-- **[CHANGELOG.md](CHANGELOG.md)** - Version history and updates
 
 ## Resources
 
