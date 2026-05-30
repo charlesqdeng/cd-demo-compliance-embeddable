@@ -118,3 +118,6 @@ dist
 *.swp
 *.swo
 *~
+
+# Archive/deprecated documentation
+docs_archive/
