@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CD Demo - Toll Free Number Verification</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="../branding.config.js"></script>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <h1>CD Demo</h1>
+            </div>
+            <nav class="nav">
+                <a href="#home">Home</a>
+                <a href="#verify">Verify Number</a>
+                <a href="#support">Support</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main">
+        <section class="hero">
+            <div class="container">
+                <h2>Toll Free Number Verification</h2>
+                <p>Submit your verification documents securely using Twilio's official compliance portal.</p>
+            </div>
+        </section>
+
+        <section class="verification-section">
+            <div class="container">
+                <!-- Two-column layout: What You'll Need + Form -->
+                <div class="verification-content-grid">
+                    <div class="info-card">
+                        <h3>What You'll Need</h3>
+                        <ul>
+                            <li>Toll-free phone number (e.g., +18001234567) - <strong>Must be purchased in your Twilio account first</strong></li>
+                            <li><strong style="color: #E65100;">⚠️ Business Registration Number (REQUIRED as of Feb 17, 2026)</strong> - EIN (U.S.) or official registration number</li>
+                            <li>Legal business name (must EXACTLY match registration records)</li>
+                            <li>Business type and registration details</li>
+                            <li>Business website with https:// (e.g., https://example.com)</li>
+                            <li>Physical business address</li>
+                            <li>Privacy Policy URL with https:// (e.g., https://example.com/privacy)</li>
+                            <li>Terms of Service URL with https:// (e.g., https://example.com/terms)</li>
+                            <li>Contact information (name, email, phone)</li>
+                            <li>Messaging use case description</li>
+                            <li>Sample message content (standard, HELP, STOP)</li>
+                            <li>Opt-in workflow details and screenshots</li>
+                            <li>Expected monthly message volume</li>
+                        </ul>
+                        <div style="background: #FFF4E5; border-left: 4px solid #FF9800; padding: 0.75rem; margin-top: 1rem; border-radius: 4px;">
+                            <strong>⚠️ Important:</strong> All URLs must include <code>https://</code> or <code>http://</code> prefix.
+                        </div>
+                    </div>
+
+                    <div class="embeddable-container">
+                    <!-- Step 1: Enter toll-free number -->
+                    <div id="tfn-input-section">
+                        <h3>Enter Toll-Free Number</h3>
+                        <form id="tfn-form">
+                            <div class="form-group">
+                                <label for="tollfreeNumber">Toll-Free Phone Number *</label>
+                                <input type="tel" id="tollfreeNumber" name="tollfreeNumber" required
+                                    placeholder="+18001234567"
+                                    pattern="\+1[8][0-9]{9}"
+                                    maxlength="12"
+                                    title="Enter exactly one toll-free number in E.164 format">
+                                <small>Enter exactly ONE toll-free number in E.164 format (e.g., +18001234567). Must start with +1800, +1888, +1877, +1866, +1855, or +1844</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="customerEmail">Contact Email (Optional)</label>
+                                <input type="email" id="customerEmail" name="customerEmail"
+                                    placeholder="your@email.com">
+                                <small>We'll send updates to the ISV notification email by default</small>
+                            </div>
+                            <button type="submit" class="submit-btn">Start Verification</button>
+                        </form>
+                    </div>
+
+                    <!-- Step 2: Twilio Compliance Embeddable -->
+                    <div id="twilio-embeddable-section" style="display: none;">
+                        <div id="embeddable-header" class="embeddable-header">
+                            <p>Verifying: <strong id="display-tfn"></strong></p>
+                        </div>
+                        <iframe id="twilio-embeddable-iframe"
+                                style="width: 100%; height: 800px; border: none; border-radius: 4px;">
+                        </iframe>
+                    </div>
+
+                    <!-- Loading state -->
+                    <div id="loading-state" class="loading" style="display: none;">
+                        <div class="spinner"></div>
+                        <p>Initializing verification form...</p>
+                    </div>
+
+                    <!-- Error state -->
+                    <div id="error-state" class="error-message" style="display: none;">
+                        <p id="error-message-text">Unable to load the verification form. Please try again later or contact support.</p>
+                        <button onclick="location.reload()" class="submit-btn">Try Again</button>
+                    </div>
+                </div>
+                </div><!-- Close verification-content-grid -->
+            </div>
+        </section>
+
+        <section class="help-section">
+            <div class="container">
+                <h3>Need Help?</h3>
+                <div class="help-grid">
+                    <div class="help-card">
+                        <h4>📚 Documentation</h4>
+                        <p>Learn about toll-free verification requirements and best practices.</p>
+                    </div>
+                    <div class="help-card">
+                        <h4>💬 Support</h4>
+                        <p>Our team is here to help with any questions about the verification process.</p>
+                    </div>
+                    <div class="help-card">
+                        <h4>⏱️ Status</h4>
+                        <p>Track your verification status and get real-time updates via email.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 CD Demo. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="#privacy">Privacy Policy</a>
+                <a href="#terms">Terms of Service</a>
+                <a href="#contact">Contact Us</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="branding.js"></script>
+    <script src="guidance.js"></script>
+    <script src="field-help.js"></script>
+    <script src="embeddable.js"></script>
+</body>
+</html>

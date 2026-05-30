@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -r -E \"\\(\\\\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\\\.[A-Z|a-z]{2,}\\\\b\\)\" --include=\"*.js\" --include=\"*.jsx\" --include=\"*.ts\" --include=\"*.tsx\" --include=\"*.json\" --include=\"*.md\" --exclude-dir=node_modules --exclude-dir=.git .)",
+      "Bash(grep -E \"\\(\\\\.env$|secret|credential|password\\)\")",
+      "Bash(rm -rf .git)",
+      "Bash(git branch *)"
+    ],
+    "additionalDirectories": [
+      "/Users/cdeng/Documents/Projects/Twilio_compliance_embeddable/.git"
+    ]
+  }
+}
