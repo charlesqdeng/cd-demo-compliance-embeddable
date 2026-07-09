@@ -49,33 +49,28 @@ app.post('/api/embeddable/initialize', async (req, res) => {
             });
         }
 
-        // Initialize the inquiry via Twilio TrustHub API
-        const initResponse = await client.request({
-            method: 'POST',
-            uri: `${TRUSTHUB_BASE_URL}/ComplianceInquiries/Tollfree/Initialize`,
-            data: {
-                TollfreePhoneNumber: tollfreePhoneNumber,
-                NotificationEmail: isvNotificationEmail || customerEmail || '',
-            }
+        // Use the SDK's purpose-built method. The generic client.request() variant
+        // was rejected by Twilio as "missing parameters" due to form-encoding differences.
+        const inquiry = await client.trusthub.v1.complianceTollfreeInquiries.create({
+            tollfreePhoneNumber,
+            notificationEmail: isvNotificationEmail || customerEmail || '',
         });
 
-        const { inquiry_id, inquiry_session_token, registration_id } = initResponse;
-
         // Store session info
-        inquirySessions.set(inquiry_id, {
+        inquirySessions.set(inquiry.inquiryId, {
             tollfreePhoneNumber,
             customerEmail: customerEmail || '',
-            registrationId: registration_id,
+            registrationId: inquiry.registrationId,
             createdAt: new Date(),
         });
 
-        console.log('Embeddable initialized:', inquiry_id);
+        console.log('Embeddable initialized:', inquiry.inquiryId);
 
         res.json({
             success: true,
-            inquiryId: inquiry_id,
-            sessionToken: inquiry_session_token,
-            registrationId: registration_id,
+            inquiryId: inquiry.inquiryId,
+            sessionToken: inquiry.inquirySessionToken,
+            registrationId: inquiry.registrationId,
             tollfreePhoneNumber: tollfreePhoneNumber
         });
 
