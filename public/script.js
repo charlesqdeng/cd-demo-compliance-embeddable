@@ -141,7 +141,7 @@ async function initializeVerificationForm() {
                     <option value="EVENTS">Events</option>
                     <option value="HIGHER_EDUCATION">Higher Education</option>
                     <option value="K12">K-12 Education</option>
-                    <option value="MARKETING">Marketing</option>
+                    <option value="MARKETING" selected>Marketing</option>
                     <option value="POLLING_AND_VOTING_NON_POLITICAL">Polling and Voting (Non-Political)</option>
                     <option value="POLITICAL_ELECTION_CAMPAIGNS">Political/Election Campaigns</option>
                     <option value="PUBLIC_SERVICE_ANNOUNCEMENT">Public Service Announcement</option>
