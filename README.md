@@ -97,7 +97,7 @@ The verification form collects all required information for Twilio toll-free ver
 - **Note:** Business contact is for the END-USER business, not ISV
 
 ### Use Case Details
-- Use case category (2FA, Marketing, Customer Care, etc.)
+- Use case category (2FA, Marketing, Customer Care, etc.). Pre-filled to **Marketing** as a demo; users can still change it. The available options can't be restricted (see [Use Case Category (Pre-fill Demo)](#use-case-category-pre-fill-demo))
 - Detailed use case description (must be specific - vague descriptions are #1 rejection reason)
 - Expected monthly message volume (11 tiers: 10, 100, 1K, 10K, 100K, 250K, 500K, 750K, 1M, 5M, 10M+)
 - Sample message content (must match use case category and include STOP language)
@@ -193,9 +193,17 @@ Edit [styles.css](styles.css:1-9):
 
 Edit [index.html](index.html:12) and update the logo section.
 
-### Use Case Categories
+### Use Case Category (Pre-fill Demo)
 
-Modify the dropdown options in [script.js](script.js) to match your specific use cases.
+The **Use Case Category** dropdown is pre-set to **Marketing** to show how a form field can be pre-filled for your customers. This is done with the `selected` attribute in [script.js](public/script.js):
+
+```html
+<option value="MARKETING" selected>Marketing</option>
+```
+
+Pre-filling only sets the default value. The user can still review it and pick a different option before submitting.
+
+> ⚠️ **Note on the Twilio Compliance Embeddable:** the form content, including the list of use case options, is managed by Twilio. It can't be customized, edited or restricted. For example, you can't limit the use case dropdown to show only "Marketing". This keeps every submission consistent and compliant with regulations.
 
 ## Development
 

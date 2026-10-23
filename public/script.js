@@ -130,6 +130,9 @@ async function initializeVerificationForm() {
 
             <div class="form-group">
                 <label for="useCase">Use Case Category *</label>
+                <!-- "selected" on Marketing demos pre-filling a default; users can still change it.
+                     In the Twilio Compliance Embeddable, the use case options are managed by Twilio
+                     and cannot be customized or restricted (e.g. to only "Marketing"). -->
                 <select id="useCase" name="useCase" required>
                     <option value="">Select a use case</option>
                     <option value="TWO_FACTOR_AUTHENTICATION">Two-Factor Authentication</option>
